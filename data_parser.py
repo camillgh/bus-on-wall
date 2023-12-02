@@ -1,11 +1,11 @@
-from config import BUS_DIRECTION
+from config import BUS_DIRECTION, BUS_NUMBER
 from datetime import datetime
 
 def parse_only_relevant_bus_info(full_timetable):
     parsed_timetable = []
     for bus_coming in full_timetable:
         if (
-            bus_coming["serviceJourney"]["line"]["publicCode"] == "160"
+            bus_coming["serviceJourney"]["line"]["publicCode"] == BUS_NUMBER
             and bus_coming["serviceJourney"]["directionType"] == BUS_DIRECTION
         ):
             parsed_timetable.append(bus_coming["expectedArrivalTime"])
