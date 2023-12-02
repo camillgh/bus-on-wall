@@ -1,7 +1,5 @@
-# data_processing.py
+from config import BUS_DIRECTION
 from datetime import datetime
-
-BUS_DIRECTION = "outbound"
 
 def parse_only_relevant_bus_info(full_timetable):
     parsed_timetable = []

@@ -1,4 +1,3 @@
-# main.py
 from entur_api import fetch_full_timetable
 from data_parser import parse_only_relevant_bus_info, convert_list_of_times_to_minutes
 

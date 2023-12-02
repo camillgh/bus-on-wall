@@ -1,11 +1,6 @@
-# entur_api.py
+from config import STOP_PLACE_NUMBER, ENTUR_CLIENT_ID, ENTUR_GRAPHQL_ENDPOINT
 import requests
 
-
-STOP_PLACE_NUMBER = "4179"
-
-ENTUR_CLIENT_ID = "privat - camillgh/bus-on-wall"
-ENTUR_GRAPHQL_ENDPOINT = "https://api.entur.io/journey-planner/v2/graphql"
 
 ENTUR_GRAPHQL_QUERY = """
 {
