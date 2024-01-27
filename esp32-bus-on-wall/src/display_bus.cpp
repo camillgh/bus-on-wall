@@ -1,7 +1,7 @@
 #include "display_bus.h"
 
 
-void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_1_HW_I2C &u8g2, const std::vector<float> &timetableInMinutes) {
+void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_1_HW_I2C &u8g2, const std::vector<float> &timetableInMinutes, unsigned long elapsedSeconds) {
   u8g2.clearBuffer();
   u8g2.setFont(u8g2_font_ncenB08_tr);
   
@@ -17,9 +17,7 @@ void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_1_HW_I2C &u8g2, const std::vecto
   }
 
   // Calculate and display the time since the last successful fetch
-  unsigned long currentTime = millis();
-  unsigned long secondsSinceLastFetch = (currentTime - lastFetchTime) / 1000;
-  String lastFetchStr = "Sist hentet for " + String(secondsSinceLastFetch) + " sekunder siden";
+  String lastFetchStr = "Sist hentet for " + String(elapsedSeconds) + " sekunder siden";
   u8g2.drawStr(0, 60, lastFetchStr.c_str());
 
   u8g2.sendBuffer();

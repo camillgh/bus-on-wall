@@ -45,11 +45,21 @@ void loop() {
     }
     Serial.println();
 
-    // Update the timestamp of the last successful fetch
-    lastFetchTime = millis();
+   
+  // Calculate the time difference since the last successful fetch
+  unsigned long currentTime = millis();
+  unsigned long elapsedTime = currentTime - lastFetchTime;
+  unsigned long elapsedSeconds = elapsedTime / 1000; // Convert milliseconds to seconds
+
+  // Update the timestamp of the last successful fetch
+  lastFetchTime = currentTime;
+
+  Serial.print("Last successful fetch: ");
+  Serial.print(elapsedSeconds);
+  Serial.println(" s ago");
 
     // Display bus information on the OLED display
-    displayBusInfo(u8g2, timetableInMinutes);
+    displayBusInfo(u8g2, timetableInMinutes, elapsedSeconds);
   }
 
   delay(10000);
