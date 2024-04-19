@@ -1,9 +1,17 @@
 #include "ntp_setup.h"
+#include "time.h"
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org");
-
 void initNTP() {
-  timeClient.begin();
-  timeClient.setTimeOffset(3600);
+  configTime(0, 0, "at.pool.ntp.org"); 
+
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("Failed to obtain time");
+    return;
+  }
+
+  setenv("TZ", "CET-1CEST,M3.5.0/02,M10.5.0/03", 1); 
+  tzset();
+
 }

@@ -26,11 +26,10 @@ String ENTUR_GRAPHQL_QUERY = R"(
 }
 )";
 
-String ENTUR_CLIENT_ID = "privat - camillgh/bus-on-wall";
+String ENTUR_CLIENT_ID = "privat-camillghbusonwall";
 String STOP_PLACE_NUMBER = "4179";  // St. Olavs plass NSR:StopPlace:4179
 String BUS_DIRECTION = "outbound";  // towards Rykkinn
 String BUS_NUMBER = "160";
-
 time_t parseTimestamp(String timestamp) {
   struct tm tm;
   memset(&tm, 0, sizeof(tm));
@@ -43,19 +42,30 @@ time_t parseTimestamp(String timestamp) {
   // Adjust the year and month values
   tm.tm_year -= 1900;
   tm.tm_mon--;
+  tm.tm_hour--; //DST Daylight Summer Time 
 
   // Convert to timestamp
   time_t t = mktime(&tm);
   return t;
 }
 
+unsigned long getCurrentEpochTime() {
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("Failed to obtain time");
+    return 0; // Return 0 or any other suitable value to indicate failure
+  }
+
+  time_t epochTime = mktime(&timeinfo);
+
+  return (unsigned long)epochTime;
+}
+
 double convertTimeToMinutes(String parsedTimestamp) {
   time_t targetTime = parseTimestamp(parsedTimestamp);
 
-  timeClient.update();
-
   // Get current time in seconds since 1970-01-01
-  unsigned long currentTime = timeClient.getEpochTime();
+  unsigned long currentTime = getCurrentEpochTime();
 
   // Calculate the difference in minutes
   int minutesUntil = (targetTime - currentTime) / 60;

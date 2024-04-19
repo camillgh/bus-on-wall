@@ -6,7 +6,6 @@
 #include <NTPClient.h>
 
 extern WiFiUDP ntpUDP;
-extern NTPClient timeClient;
 
 void initNTP();
 
