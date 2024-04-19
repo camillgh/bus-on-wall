@@ -92,11 +92,19 @@ String fetchFullTimetable() {
 
   // Make the HTTP request
   http.begin(ENTUR_GRAPHQL_ENDPOINT);
-  http.addHeader("Accept", "application/json");
-  http.addHeader("ET-Client-Name", "privat - camillgh/bus-on-wall");
-  http.addHeader("ET-Client-Id", ENTUR_CLIENT_ID);
+  http.addHeader("ET-Client-Name", ENTUR_CLIENT_ID);  
+  http.addHeader("Content-Type", "application/json"); 
 
-  int httpCode = http.POST(qry);
+  // Create JSON object for the request body
+  DynamicJsonDocument requestBody(512);
+  requestBody["query"] = qry;
+
+  // Serialize JSON object to string
+  String requestBodyString;
+  serializeJson(requestBody, requestBodyString);
+
+  // Make the POST request with the JSON body
+  int httpCode = http.POST(requestBodyString);
 
   if (httpCode == HTTP_CODE_OK) {
     String payload = http.getString();
