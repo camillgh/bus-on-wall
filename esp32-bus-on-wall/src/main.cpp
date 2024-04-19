@@ -27,11 +27,25 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  initWiFi();
-  initNTP();
 
   u8g2.begin();
 
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_ncenB08_tr);
+    u8g2.drawStr(0,20,"Connecting to Wifi...");
+  } while ( u8g2.nextPage() );
+
+  initWiFi();
+  initNTP();
+
+
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_ncenB08_tr);
+    u8g2.drawStr(0,20,"Connected to Wifi!");
+    u8g2.drawStr(0,40,"LETS GO!!");
+  } while ( u8g2.nextPage() );
 }
 
 
@@ -68,17 +82,9 @@ void loop() {
       Serial.println(" s ago");
 
     // Display bus information on the OLED display
-    // displayBusInfo(u8g2, timetableInMinutes, elapsedSeconds);
+    displayBusInfo(u8g2, timetableInMinutes, elapsedSeconds);
   }
   delay(10000);
 
-  u8g2.firstPage();
-  do {
-    u8g2.setFont(u8g2_font_ncenB14_tr);
-    u8g2.drawStr(0,20,"whats updog");
-  } while ( u8g2.nextPage() );
-  delay(1000);
 
-
-  
 }
