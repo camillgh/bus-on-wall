@@ -26,6 +26,9 @@ void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::ve
 void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2){ //, const std::vector<float> &timetableInMinutes, unsigned long elapsedSeconds) {
   u8g2.clearBuffer();
 
+  // Alternative font that the user liked:
+  // u8g2_font_lubR24_tf (den tynne)
+
   // Display the main time
   u8g2.setFont(u8g2_font_ncenB24_tr);
   u8g2.drawStr(18, 40, "01:30");
