@@ -22,3 +22,17 @@ void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::ve
 
   u8g2.sendBuffer();
 }
+
+void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2){ //, const std::vector<float> &timetableInMinutes, unsigned long elapsedSeconds) {
+  u8g2.clearBuffer();
+
+  // Display the main time
+  u8g2.setFont(u8g2_font_ncenB24_tr);
+  u8g2.drawStr(18, 40, "01:30");
+
+  // Display the second time
+  u8g2.setFont(u8g2_font_ncenB08_tr);
+  u8g2.drawStr(45, 60, "03:35");
+
+  u8g2.sendBuffer();
+}
