@@ -16,6 +16,7 @@ String fetchFullTimetable();
 time_t parseTimestamp(String timestamp);
 double convertTimeToMinutes(String parsedTimestamp);
 std::vector<float> parseOnlyRelevantBusInfo(JsonArray estimatedCalls);
+unsigned long getCurrentEpochTime();
 
 #endif  // GRAPHQL_FUNCTIONS_H
 
