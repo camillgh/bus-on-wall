@@ -27,14 +27,14 @@ void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::ve
 void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::vector<float> &timetableInMinutes) {
   u8g2.clearBuffer();
 
-  String mainTime = String((int)timetableInMinutes[0]) + "min";
+  String mainTime = String((int)timetableInMinutes[0]) + " min";
   String nextTime = String((int)timetableInMinutes[1]) + " min";
 
   // Alternative font that the user also liked:
   // u8g2_font_lubR24_tf (den tynne)
 
   u8g2.setFont(u8g2_font_ncenB08_tr);
-  u8g2.drawStr(25, 10, "160 Rykkinn");
+  u8g2.drawStr(27, 10, "160 Rykkinn");
 
   // Display the main time
   u8g2.setFont(u8g2_font_ncenB24_tr);
@@ -42,7 +42,7 @@ void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const st
 
   // Display the second time
   u8g2.setFont(u8g2_font_ncenB08_tr);
-  u8g2.drawStr(40, 60, nextTime.c_str());
+  u8g2.drawStr(43, 60, nextTime.c_str());
 
   u8g2.sendBuffer();
 }
