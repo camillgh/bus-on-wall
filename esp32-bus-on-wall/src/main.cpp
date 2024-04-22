@@ -21,7 +21,7 @@
 U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI u8g2(U8G2_R0, OLED_CS, OLED_DC_MISO, OLED_RESET);
 
 unsigned long lastFetchTime = 0;
-
+std::vector<float> timetableInMinutes(3, 0.00);
 
 void setup() {
   Serial.begin(115200);
@@ -34,6 +34,7 @@ void setup() {
   do {
     u8g2.setFont(u8g2_font_ncenB08_tr);
     u8g2.drawStr(0,20,"Connecting to Wifi...");
+    delay(1000);
   } while ( u8g2.nextPage() );
 
   initWiFi();
@@ -45,46 +46,51 @@ void setup() {
     u8g2.setFont(u8g2_font_ncenB08_tr);
     u8g2.drawStr(0,20,"Connected to Wifi!");
     u8g2.drawStr(0,40,"LETS GO!!");
+    delay(1000);
   } while ( u8g2.nextPage() );
+
+}
+
+
+std::vector<float> updateBusInfo(std::vector<float> existingTimetableInMinutes) {
+    std::vector<float> newTimetableInMinutes;
+
+    // Calculate the time difference since the last successful fetch
+    unsigned long currentTime = millis();
+    unsigned long elapsedTime = currentTime - lastFetchTime;
+    unsigned long elapsedSeconds = elapsedTime / 1000; // Convert milliseconds to seconds
+
+
+    // Check if it's time to update bus info (every 10 seconds)
+    if (elapsedSeconds >= 10 || lastFetchTime == 0) {
+        // Update bus info
+        String fullTimetable = fetchFullTimetable();
+        DynamicJsonDocument doc(12288);
+        DeserializationError error = deserializeJson(doc, fullTimetable);
+        JsonArray estimatedCalls = doc["data"]["stopPlace"]["estimatedCalls"].as<JsonArray>();
+
+      if (error.c_str() == "Ok") {
+         // Update the timestamp of the last successful fetch
+          lastFetchTime = currentTime;
+          newTimetableInMinutes = parseOnlyRelevantBusInfo(estimatedCalls);
+
+        // Display full bus information
+        // displayBusInfo(u8g2, newTimetableInMinutes, elapsedSeconds);
+
+        return newTimetableInMinutes;
+      }
+      return existingTimetableInMinutes;
+    }
+    return existingTimetableInMinutes;
 }
 
 
 void loop() {
 
-  String fullTimetable = fetchFullTimetable();
+  timetableInMinutes = updateBusInfo(timetableInMinutes);
 
-  // Now you can parse the JSON response using ArduinoJson library if needed
-  DynamicJsonDocument doc(12288);
-  DeserializationError error = deserializeJson(doc, fullTimetable);
-  JsonArray estimatedCalls = doc["data"]["stopPlace"]["estimatedCalls"].as<JsonArray>();
-
-  if (error.c_str() == "Ok") {
-     std::vector<float> timetableInMinutes = parseOnlyRelevantBusInfo(estimatedCalls);
-
-     Serial.print("Minutes until the bus comes: ");
-     for (const auto &timeInMinutes : timetableInMinutes) {
-       Serial.print(timeInMinutes);
-       Serial.print(" ");
-     }
-      Serial.println();
-
-      
-      // Calculate the time difference since the last successful fetch
-      unsigned long currentTime = millis();
-      unsigned long elapsedTime = currentTime - lastFetchTime;
-      unsigned long elapsedSeconds = elapsedTime / 1000; // Convert milliseconds to seconds
-
-      // Update the timestamp of the last successful fetch
-      lastFetchTime = currentTime;
-
-      Serial.print("Last successful fetch: ");
-      Serial.print(elapsedSeconds);
-      Serial.println(" s ago");
-
-    // Display bus information on the OLED display
-    displayBusInfo(u8g2, timetableInMinutes, elapsedSeconds);
-  }
-  delay(10000);
-
+  // Display bus countdown on the OLED display
+  displayBusCountdown(u8g2, timetableInMinutes);
 
 }
+
