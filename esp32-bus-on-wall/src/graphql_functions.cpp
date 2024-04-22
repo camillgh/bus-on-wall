@@ -30,6 +30,8 @@ String ENTUR_CLIENT_ID = "privat-camillghbusonwall";
 String STOP_PLACE_NUMBER = "4179";  // St. Olavs plass NSR:StopPlace:4179
 String BUS_DIRECTION = "outbound";  // towards Rykkinn
 String BUS_NUMBER = "160";
+int MINUTES_TO_BUS_STOP = 4;
+
 time_t parseTimestamp(String timestamp) {
   struct tm tm;
   memset(&tm, 0, sizeof(tm));
@@ -67,6 +69,9 @@ double convertTimeToMinutes(String parsedTimestamp) {
   // Get current time in seconds since 1970-01-01
   unsigned long currentTime = getCurrentEpochTime();
 
+  // Add walking time to bus stop minutes to the current time
+  currentTime += MINUTES_TO_BUS_STOP * 60;
+
   // Calculate the difference in minutes
   int minutesUntil = (targetTime - currentTime) / 60;
 
@@ -84,8 +89,12 @@ std::vector<float> parseOnlyRelevantBusInfo(JsonArray estimatedCalls) {
     if (busComing["serviceJourney"]["line"]["publicCode"] == BUS_NUMBER &&
         busComing["serviceJourney"]["directionType"] == BUS_DIRECTION) {
       String expectedArrivalTime = busComing["expectedArrivalTime"].as<String>();
-
-      timetableInMinutes.push_back(convertTimeToMinutes(expectedArrivalTime));
+      
+      float timeInMinutes = convertTimeToMinutes(expectedArrivalTime);
+      
+      if (timeInMinutes >= 0){
+        timetableInMinutes.push_back(timeInMinutes);
+      }
     }
   }
 
