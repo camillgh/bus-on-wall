@@ -39,3 +39,22 @@ void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2){ //, con
 
   u8g2.sendBuffer();
 }
+
+String countdownUntil(String expectedArrivalTime) {
+  time_t targetTime = parseTimestamp(expectedArrivalTime);
+
+  // Get current time in seconds since 1970-01-01
+  unsigned long currentTime = getCurrentEpochTime();
+
+  // Calculate the difference in seconds
+  long secondsUntil = targetTime - currentTime;
+
+  // Convert seconds to minutes and seconds
+  long minutes = secondsUntil / 60;
+  long seconds = secondsUntil % 60;
+
+  // Format the countdown as "minutes:seconds"
+  String countdown = String(minutes) + ":" + ((seconds < 10) ? "0" : "") + String(seconds);
+
+  return countdown;
+}
