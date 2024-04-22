@@ -1,4 +1,5 @@
 #include "display_bus.h"
+#include "graphql_functions.h"
 
 
 void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::vector<float> &timetableInMinutes, unsigned long elapsedSeconds) {
@@ -23,19 +24,25 @@ void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::ve
   u8g2.sendBuffer();
 }
 
-void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2){ //, const std::vector<float> &timetableInMinutes, unsigned long elapsedSeconds) {
+void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::vector<float> &timetableInMinutes) {
   u8g2.clearBuffer();
 
-  // Alternative font that the user liked:
+  String mainTime = String((int)timetableInMinutes[0]) + "min";
+  String nextTime = String((int)timetableInMinutes[1]) + " min";
+
+  // Alternative font that the user also liked:
   // u8g2_font_lubR24_tf (den tynne)
+
+  u8g2.setFont(u8g2_font_ncenB08_tr);
+  u8g2.drawStr(25, 10, "160 Rykkinn");
 
   // Display the main time
   u8g2.setFont(u8g2_font_ncenB24_tr);
-  u8g2.drawStr(18, 40, "01:30");
+  u8g2.drawStr(15, 40, mainTime.c_str());
 
   // Display the second time
   u8g2.setFont(u8g2_font_ncenB08_tr);
-  u8g2.drawStr(45, 60, "03:35");
+  u8g2.drawStr(40, 60, nextTime.c_str());
 
   u8g2.sendBuffer();
 }
