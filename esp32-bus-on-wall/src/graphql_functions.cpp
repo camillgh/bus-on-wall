@@ -92,7 +92,7 @@ std::vector<float> parseOnlyRelevantBusInfo(JsonArray estimatedCalls) {
       
       float timeInMinutes = convertTimeToMinutes(expectedArrivalTime);
       
-      if (timeInMinutes >= 0){
+      if (timeInMinutes >= 0 && timeInMinutes < 60){
         timetableInMinutes.push_back(timeInMinutes);
       }
     }
