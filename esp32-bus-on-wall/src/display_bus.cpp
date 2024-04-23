@@ -27,24 +27,55 @@ void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::ve
 void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::vector<float> &timetableInMinutes) {
   u8g2.clearBuffer();
 
+  static unsigned long lastToggleTime = 0;
+  const unsigned long toggleInterval = 1000;
+  
   String mainTime = String((int)timetableInMinutes[0]) + " min";
   String nextTime = String((int)timetableInMinutes[1]) + " min";
 
   // Alternative font that the user also liked:
   // u8g2_font_lubR24_tf (den tynne)
 
-  u8g2.setFont(u8g2_font_ncenB08_tr);
-  u8g2.drawStr(27, 10, "160 Rykkinn");
+  // Check if main time is 1 minute or less
+  if (timetableInMinutes[0] == 0) { //
+    displayBlinking(u8g2, mainTime, lastToggleTime, toggleInterval);
 
-  // Display the main time
-  u8g2.setFont(u8g2_font_ncenB24_tr);
-  u8g2.drawStr(15, 40, mainTime.c_str());
-
-  // Display the second time
-  u8g2.setFont(u8g2_font_ncenB08_tr);
-  u8g2.drawStr(43, 60, nextTime.c_str());
+  } else {
+    displayNormal(u8g2, mainTime, nextTime);
+  }
 
   u8g2.sendBuffer();
+}
+
+void displayBorder(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2) {
+    u8g2.drawFrame(0, 0, 126, 64);
+    u8g2.drawFrame(1, 1, 124, 62);
+    u8g2.drawFrame(2, 2, 122, 60);
+    u8g2.drawFrame(3, 3, 120, 58);
+    u8g2.drawFrame(4, 4, 118, 56);
+}
+
+void displayBlinking(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String &mainTime, unsigned long lastToggleTime, unsigned long toggleInterval) {
+    if (millis() - lastToggleTime >= toggleInterval) {
+      lastToggleTime = millis();
+      u8g2.setDrawColor(1 - u8g2.getDrawColor()); // Toggle draw color between 0 (black) and 1 (white)
+    }
+
+    displayBorder(u8g2);
+
+    u8g2.setFont(u8g2_font_ncenB24_tr);
+    u8g2.drawStr(18, 40, mainTime.c_str());
+}
+
+void displayNormal(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String &mainTime, const String &nextTime){
+      u8g2.setFont(u8g2_font_ncenB08_tr);
+    u8g2.drawStr(25, 10, "160 Rykkinn");
+
+    u8g2.setFont(u8g2_font_ncenB24_tr);
+    u8g2.drawStr(15, 40, mainTime.c_str());
+
+    u8g2.setFont(u8g2_font_ncenB08_tr);
+    u8g2.drawStr(40, 60, nextTime.c_str());
 }
 
 String countdownUntil(String expectedArrivalTime) {
