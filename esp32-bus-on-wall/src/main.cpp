@@ -18,17 +18,36 @@
 #define OLED_DC_MISO    16
 #define OLED_CS          5
 
+#define BUTTON_TURN_ON_SYSTEM 4
+
+#define TIME_FIFTEEN_MINUTES 15 * 60 * 1000
+
 U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI u8g2(U8G2_R0, OLED_CS, OLED_DC_MISO, OLED_RESET);
 
 unsigned long lastFetchTime = 0;
 std::vector<float> timetableInMinutes(3, 0.00);
 
+unsigned long timeSinceWakeUp = 0;
+bool systemActive = false; 
+
 void setup() {
   Serial.begin(115200);
   delay(1000);
 
+  pinMode(BUTTON_TURN_ON_SYSTEM, INPUT_PULLUP);
+}
 
+void initializeAfterWakeUp(){
+  
   u8g2.begin();
+
+  u8g2.firstPage();
+  do {
+    u8g2.setFont(u8g2_font_ncenB08_tr);
+    u8g2.drawStr(0,20,"Hello there!");
+    delay(1000);
+  } while ( u8g2.nextPage() );
+
 
   u8g2.firstPage();
   do {
@@ -86,11 +105,28 @@ std::vector<float> updateBusInfo(std::vector<float> existingTimetableInMinutes) 
 
 
 void loop() {
+  if (digitalRead(BUTTON_TURN_ON_SYSTEM) == LOW) { // Activate the system - SETUP
+    Serial.print("Button pressed!");
+    systemActive = true; 
+    timeSinceWakeUp = millis();
+    initializeAfterWakeUp();
+  }
 
-  timetableInMinutes = updateBusInfo(timetableInMinutes);
+  int wakeUpDuration = millis() - timeSinceWakeUp;
 
-  // Display bus countdown on the OLED display
-  displayBusCountdown(u8g2, timetableInMinutes);
+  if (systemActive && (wakeUpDuration < TIME_FIFTEEN_MINUTES)) { // System active - loop in timespan
+      
+      timetableInMinutes = updateBusInfo(timetableInMinutes);
+      displayBusCountdown(u8g2, timetableInMinutes);
+    
+    } else { // Deactivate system
+      Serial.print("Deactivate system");
+
+      systemActive = false; 
+      u8g2.clearBuffer(); 
+      u8g2.sendBuffer(); 
+      esp_deep_sleep(0);
+    }  
 
 }
 
