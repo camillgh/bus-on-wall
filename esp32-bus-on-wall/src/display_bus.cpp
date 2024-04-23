@@ -37,8 +37,17 @@ void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const st
   // u8g2_font_lubR24_tf (den tynne)
 
   // Check if main time is 1 minute or less
-  if (timetableInMinutes[0] == 0) { //
-    displayBlinking(u8g2, mainTime, lastToggleTime, toggleInterval);
+  if (timetableInMinutes[0] == 0) {
+    // displayBlinking(u8g2, mainTime, lastToggleTime, toggleInterval);
+    if (millis() - lastToggleTime >= toggleInterval) {
+      lastToggleTime = millis();
+      u8g2.setDrawColor(1 - u8g2.getDrawColor()); // Toggle draw color between 0 (black) and 1 (white)
+    }
+
+    displayBorder(u8g2);
+
+    u8g2.setFont(u8g2_font_ncenB24_tr);
+    u8g2.drawStr(18, 40, mainTime.c_str());
 
   } else {
     displayNormal(u8g2, mainTime, nextTime);
