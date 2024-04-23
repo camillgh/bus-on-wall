@@ -77,14 +77,23 @@ void displayBlinking(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String
 }
 
 void displayNormal(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String &mainTime, const String &nextTime){
-      u8g2.setFont(u8g2_font_ncenB08_tr);
-    u8g2.drawStr(25, 10, "160 Rykkinn");
-
-    u8g2.setFont(u8g2_font_ncenB24_tr);
-    u8g2.drawStr(15, 40, mainTime.c_str());
+    const int screenWidth = 128;
+    const int screenHeight = 64;
 
     u8g2.setFont(u8g2_font_ncenB08_tr);
-    u8g2.drawStr(40, 60, nextTime.c_str());
+    int busStopNameWidth = u8g2.getStrWidth("160 Rykkinn");
+    int busStopNameX = (screenWidth - busStopNameWidth) / 2; 
+    u8g2.drawStr(busStopNameX, 10, "160 Rykkinn");
+
+    u8g2.setFont(u8g2_font_ncenB24_tr);
+    int mainTimeWidth = u8g2.getStrWidth(mainTime.c_str());
+    int mainTimeX = (screenWidth - mainTimeWidth) / 2; 
+    u8g2.drawStr(mainTimeX, 40, mainTime.c_str());
+
+    u8g2.setFont(u8g2_font_ncenB08_tr);
+    int nextTimeWidth = u8g2.getStrWidth(nextTime.c_str());
+    int nextTimeX = (screenWidth - nextTimeWidth) / 2;
+    u8g2.drawStr(nextTimeX, 60, nextTime.c_str());
 }
 
 String countdownUntil(String expectedArrivalTime) {
