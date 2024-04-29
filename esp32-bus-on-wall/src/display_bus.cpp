@@ -48,7 +48,10 @@ void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const st
     displayBorder(u8g2);
 
     u8g2.setFont(u8g2_font_ncenB24_tr);
-    u8g2.drawStr(18, 40, mainTime.c_str());
+    u8g2.drawStr(18, 35, mainTime.c_str());
+
+    u8g2.setFont(u8g2_font_ncenB08_tr);
+    centerText(u8g2, nextTime.c_str(), 50);
 
   } else {
     u8g2.setDrawColor(1);
