@@ -34,8 +34,10 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  pinMode(BUTTON_TURN_ON_SYSTEM, INPUT_PULLUP);
-}
+
+  pinMode(BUTTON_TURN_ON_SYSTEM, OUTPUT);
+  digitalWrite(BUTTON_TURN_ON_SYSTEM, HIGH);
+  }
 
 void initializeAfterWakeUp(){
   
