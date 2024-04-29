@@ -1,6 +1,10 @@
-# Bus-on-Wall 🚌🚀
+# Personalized bus time table 🚌🚀
 
-This code is running on an ESP32 that is connected to an OLED display, which will print the timetable for the bus stop St. Olavs Plass, and parse the timetable for only bus 160 going towards Rykkinn. Made for my cute baby sharktank.
+![Personalized bus time table](/assets/demo.jpg)
+
+The first version of the backend was first made in Python, in the **src_python** folder, then it was developed in C++ to run on the ESP32.
+
+The code from the **src_cpp_esp32** is running on an ESP32 that is connected to an 128x64 2.42 inch SPI OLED display, which will print the timetable for the bus stop St. Olavs Plass, and parse the timetable for only bus 160 going towards Rykkinn.
 
 ## Configuration 🛠️
 
@@ -14,3 +18,30 @@ STOP_PLACE_NUMBER = "your-stop-place-number"
 BUS_DIRECTION = "inbound" #or "outbound"
 BUS_NUMBER = "your-bus-number"
 ```
+
+## Details 📝
+
+The API-fetch is done every 10 seconds, and the times displayed are the times fetched from ENTUR with the time it takes to walk to the bus stop, `MINUTES_TO_BUS_STOP`, subtracted from it. When it's 0 minutes remaining until the next bus comes, the display will blink periodically.
+
+The ESP32 is in a deep sleep mode until the button is pressed, and then it will be on for 15 minutes.
+
+The 3D-files were made based on [this case from Thingiverse](https://www.thingiverse.com/thing:5943234), and [this is the delicious button that was used](https://www.kjell.com/no/produkter/elektro-og-verktoy/el-produkter/svakstrom/strombrytere-for-svakstrom/trykkstrombryter-fra-til-rod-belysning-p36064).
+
+## Electric connections⚡
+
+| OLED pins | ESP32 Pin |
+| --------- | --------- |
+| VCC       | V5        |
+| SCK       | G18       |
+| SDA       | G23       |
+| RES       | G17       |
+| DC        | G16       |
+| CS        | G5        |
+
+And the button was on pin G4 of the ESP32.
+
+I bought this dev kit pretty cheap, so it did not match perfectly, but I based the connections of off [this data sheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf).
+
+![ESP32 dev kit used](/assets/esp32.png)
+
+_ESP32 dev kit used_
