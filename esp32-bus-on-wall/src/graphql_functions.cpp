@@ -30,7 +30,7 @@ String ENTUR_CLIENT_ID = "privat-camillghbusonwall";
 String STOP_PLACE_NUMBER = "4179";  // St. Olavs plass NSR:StopPlace:4179
 String BUS_DIRECTION = "outbound";  // towards Rykkinn
 String BUS_NUMBER = "160";
-int MINUTES_TO_BUS_STOP = 4;
+int MINUTES_TO_BUS_STOP = 3;
 
 time_t parseTimestamp(String timestamp) {
   struct tm tm;
@@ -92,7 +92,7 @@ std::vector<float> parseOnlyRelevantBusInfo(JsonArray estimatedCalls) {
       
       float timeInMinutes = convertTimeToMinutes(expectedArrivalTime);
       
-      if (timeInMinutes >= 0 && timeInMinutes < 60){
+      if (timeInMinutes >= 0 && timeInMinutes < 1000){
         timetableInMinutes.push_back(timeInMinutes);
       }
     }
