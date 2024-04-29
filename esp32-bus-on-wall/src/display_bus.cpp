@@ -51,6 +51,7 @@ void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const st
     u8g2.drawStr(18, 40, mainTime.c_str());
 
   } else {
+    u8g2.setDrawColor(1);
     displayNormal(u8g2, mainTime, nextTime, nextTimeThird);
   }
 
