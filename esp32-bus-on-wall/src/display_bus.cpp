@@ -32,6 +32,7 @@ void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const st
   
   String mainTime = String((int)timetableInMinutes[0]) + " min";
   String nextTime = String((int)timetableInMinutes[1]) + " min";
+  String nextTimeThird = String((int)timetableInMinutes[2]) + " min";
 
   // Alternative font that the user also liked:
   // u8g2_font_lubR24_tf (den tynne)
@@ -50,7 +51,7 @@ void displayBusCountdown(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const st
     u8g2.drawStr(18, 40, mainTime.c_str());
 
   } else {
-    displayNormal(u8g2, mainTime, nextTime);
+    displayNormal(u8g2, mainTime, nextTime, nextTimeThird);
   }
 
   u8g2.sendBuffer();
@@ -76,7 +77,7 @@ void displayBlinking(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String
     centerText(u8g2, mainTime.c_str(), 40);
 }
 
-void displayNormal(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String &mainTime, const String &nextTime){
+void displayNormal(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String &mainTime, const String &nextTime, const String &nextTimeThird){
 
     u8g2.setFont(u8g2_font_ncenB08_tr);
     centerText(u8g2, "160 Rykkinn", 10);
@@ -85,7 +86,8 @@ void displayNormal(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String &
     centerText(u8g2, mainTime.c_str(), 40);
 
     u8g2.setFont(u8g2_font_ncenB08_tr);
-    centerText(u8g2, nextTime.c_str(), 60);
+    u8g2.drawStr(15, 60, nextTime.c_str());
+    u8g2.drawStr(73, 60, nextTimeThird.c_str());
 }
 
 void centerText(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const char* inputString, int inputHeight){
