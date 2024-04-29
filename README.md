@@ -2,8 +2,6 @@
 
 ![Personalized bus time table](/assets/demo.jpg)
 
-The first version of the backend was first made in Python, in the **src_python** folder, then it was developed in C++ to run on the ESP32.
-
 The code from the **src_cpp_esp32** is running on an ESP32 that is connected to an 128x64 2.42 inch SPI OLED display, which will print the timetable for the bus stop St. Olavs Plass, and parse the timetable for only bus 160 going towards Rykkinn.
 
 ## Configuration 🛠️
@@ -26,6 +24,8 @@ The API-fetch is done every 10 seconds, and the times displayed are the times fe
 The ESP32 is in a deep sleep mode until the button is pressed, and then it will be on for 15 minutes.
 
 The 3D-files were made based on [this case from Thingiverse](https://www.thingiverse.com/thing:5943234), and [this is the delicious button that was used](https://www.kjell.com/no/produkter/elektro-og-verktoy/el-produkter/svakstrom/strombrytere-for-svakstrom/trykkstrombryter-fra-til-rod-belysning-p36064).
+
+The first version of the backend was first made in Python, in the **src_python** folder, then it was developed in C++ to run on the ESP32.
 
 ## Electric connections⚡
 
