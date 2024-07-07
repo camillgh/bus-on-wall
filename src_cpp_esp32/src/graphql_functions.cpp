@@ -27,10 +27,10 @@ String ENTUR_GRAPHQL_QUERY = R"(
 )";
 
 String ENTUR_CLIENT_ID = "privat-camillghbusonwall";
-String STOP_PLACE_NUMBER = "4179";  // St. Olavs plass NSR:StopPlace:4179
-String BUS_DIRECTION = "outbound";  // towards Rykkinn
-String BUS_NUMBER = "160";
-int MINUTES_TO_BUS_STOP = 3;
+String STOP_PLACE_NUMBER = "4076";  // St. Olavs plass NSR:StopPlace:4179 // Nationaltheateret, buss NSR:StopPlace:4076
+String BUS_DIRECTION = "outbound";  // towards Rykkinn and Fornebu: outbound
+String BUS_NUMBER = "81";
+int MINUTES_TO_BUS_STOP = 10; //3 to St. Olavs plass
 
 time_t parseTimestamp(String timestamp) {
   struct tm tm;
@@ -81,21 +81,23 @@ double convertTimeToMinutes(String parsedTimestamp) {
 
 
 
-// Function to parse relevant bus information
 std::vector<float> parseOnlyRelevantBusInfo(JsonArray estimatedCalls) {
-  std::vector<float> timetableInMinutes;
+  std::vector<float> timetableInMinutes(3, -1.00); // Initialize with -1.00
 
+  size_t index = 0;
   for (const auto &busComing : estimatedCalls) {
-    if (busComing["serviceJourney"]["line"]["publicCode"] == BUS_NUMBER &&
-        busComing["serviceJourney"]["directionType"] == BUS_DIRECTION) {
-      String expectedArrivalTime = busComing["expectedArrivalTime"].as<String>();
-      
-      float timeInMinutes = convertTimeToMinutes(expectedArrivalTime);
-      
-      if (timeInMinutes >= 0 && timeInMinutes < 1000){
-        timetableInMinutes.push_back(timeInMinutes);
+      if (busComing["serviceJourney"]["line"]["publicCode"] == BUS_NUMBER &&
+          busComing["serviceJourney"]["directionType"] == BUS_DIRECTION) {
+          String expectedArrivalTime = busComing["expectedArrivalTime"].as<String>();
+          float timeInMinutes = convertTimeToMinutes(expectedArrivalTime);
+
+          if (timeInMinutes >= 0 && timeInMinutes < 1000) {
+              timetableInMinutes[index] = timeInMinutes;
+              if (++index >= 3) {
+                  break;
+              }
+          }
       }
-    }
   }
 
   return timetableInMinutes;

@@ -25,7 +25,7 @@
 U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI u8g2(U8G2_R0, OLED_CS, OLED_DC_MISO, OLED_RESET);
 
 unsigned long lastFetchTime = 0;
-std::vector<float> timetableInMinutes(3, 0.00);
+std::vector<float> timetableInMinutes(3, -1.00);
 
 unsigned long timeSinceWakeUp = 0;
 bool systemActive = false; 
