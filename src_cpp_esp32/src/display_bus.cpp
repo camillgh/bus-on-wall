@@ -11,7 +11,7 @@ void displayBusInfo(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const std::ve
 
   // Display bus information and time until arrival
   for (size_t i = 0; i < timetableInMinutes.size() && i < 3; ++i) {
-    String busInfo = "81 Fornebu"; // Replace with your actual bus number and route
+    String busInfo = "160 Rykkinn"; // Replace with your actual bus number and route
     String timeStr = String((int)timetableInMinutes[i]) + " min";
     u8g2.drawStr(0, 20 + i * 10, busInfo.c_str());
     u8g2.drawStr(90, 20 + i * 10, timeStr.c_str());
@@ -85,7 +85,7 @@ void displayBlinking(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String
 void displayNormal(U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI &u8g2, const String &mainTime, const String &nextTime, const String &nextTimeThird){
 
     u8g2.setFont(u8g2_font_ncenB08_tr);
-    centerText(u8g2, "81 Fornebu", 10); //160 Rykkinn
+    centerText(u8g2, "160 Rykkinn", 10); //160 Rykkinn
 
     u8g2.setFont(u8g2_font_ncenB24_tr);
     centerText(u8g2, mainTime.c_str(), 40);

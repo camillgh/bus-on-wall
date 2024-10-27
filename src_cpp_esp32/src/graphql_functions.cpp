@@ -27,10 +27,10 @@ String ENTUR_GRAPHQL_QUERY = R"(
 )";
 
 String ENTUR_CLIENT_ID = "privat-camillghbusonwall";
-String STOP_PLACE_NUMBER = "4076";  // St. Olavs plass NSR:StopPlace:4179 // Nationaltheateret, buss NSR:StopPlace:4076
+String STOP_PLACE_NUMBER = "63280";  // St. Olavs plass NSR:StopPlace:4179 // Nationaltheateret, buss NSR:StopPlace:4076 // Holbergs plass 63280
 String BUS_DIRECTION = "outbound";  // towards Rykkinn and Fornebu: outbound
-String BUS_NUMBER = "81";
-int MINUTES_TO_BUS_STOP = 10; //3 to St. Olavs plass
+String BUS_NUMBER = "160";
+int MINUTES_TO_BUS_STOP = 7; //3 to St. Olavs plass //10 to National //7 to Holbergs plass
 
 time_t parseTimestamp(String timestamp) {
   struct tm tm;
@@ -44,7 +44,7 @@ time_t parseTimestamp(String timestamp) {
   // Adjust the year and month values
   tm.tm_year -= 1900;
   tm.tm_mon--;
-  tm.tm_hour--; //DST Daylight Summer Time 
+  // tm.tm_hour--; //DST Daylight Summer Time 
 
   // Convert to timestamp
   time_t t = mktime(&tm);
