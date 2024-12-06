@@ -3,7 +3,7 @@
 #include <ArduinoJson.h>
 #include "ntp_setup.h"
 
-const String ENTUR_GRAPHQL_ENDPOINT = "https://api.entur.io/journey-planner/v2/graphql";
+const String ENTUR_GRAPHQL_ENDPOINT = "https://api.entur.io/journey-planner/v3/graphql";
 
 String ENTUR_GRAPHQL_QUERY = R"(
 {
